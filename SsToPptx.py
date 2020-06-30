@@ -7,7 +7,7 @@ from PIL import Image
 from PIL.ImageQt import ImageQt
 import time
 from PyQt5 import QtWidgets,QtGui,QtCore
-import threading
+
 
 	
 def resizeImage(image,size=(1920,1080),scale=1/3):
@@ -19,17 +19,12 @@ class Pencere(QtWidgets.QWidget):
 	def __init_(self):
 		QtWidgets.QWidget.__init__(self)
 		QtCore.QThread.__init__(self)
-	def run(self):
-		self.home()
+
 	def home(self):
 		self.setWindowTitle("SstoPptx")
 		self.h_box1 = QtWidgets.QHBoxLayout()
 		self.v_box1 = QtWidgets.QVBoxLayout()
 		self.v_box2 = QtWidgets.QVBoxLayout()
-
-		#self.btn = QtWidgets.QPushButton("this")	
-		#self.btn.clicked.connect(self.change)
-
 		self.text = QtWidgets.QLabel("Latest screenshot")
 
 		self.labelImage = QtWidgets.QLabel(self)	
@@ -40,10 +35,8 @@ class Pencere(QtWidgets.QWidget):
 		self.labelImage.setPixmap(self.pixmap)
 
 
-		#self.v_box1.addWidget(self.btn)
 		self.v_box2.addWidget(self.text)
-		self.v_box2.addWidget(self.labelImage)		
-		#self.h_box1.addLayout(self.v_box1)		
+		self.v_box2.addWidget(self.labelImage)
 		self.h_box1.addLayout(self.v_box2)
 		self.setLayout(self.h_box1)		
 		
@@ -52,10 +45,6 @@ class Pencere(QtWidgets.QWidget):
 		self.qimage = ImageQt(self.image)
 		self.pixmap = QtGui.QPixmap().fromImage(self.qimage)		
 		self.labelImage.setPixmap(self.pixmap)
-		"""
-		self.previews.append(QtWidgets.QLabel())
-		self.previews[-1].setPixmap(self.pixmap)
-		"""
 		self.text.setText(str(len)+". screenshot (latest)")
 
 
@@ -131,15 +120,12 @@ def on_release(key):
     		print("Exiting aborted.\n")
     if key == keyboard.Key.pause:
         # Stop listener
-        """  
         try:
+        	print("Saving...")
         	slide.convertToPptx()
         	return False
         except:
         	print("!!! ERROR !!! File is safe.\t-->Check if powerPoint file is already opened and try again")
-        """
-        slide.convertToPptx()
-        return False   
         
     if key == keyboard.Key.scroll_lock:
     	print(f"Scroll Lock key pressed : {len(slide.screenshots)+1}.Screenshot Taken")
@@ -162,10 +148,7 @@ listener.start()
 
 app = QtWidgets.QApplication(sys.argv)
 pencerem = Pencere()
-pencerem.run()
-#pencerem.home()	
+pencerem.home()	
 pencerem.show()
 sys.exit(app.exec_())
-
-#main()
 
